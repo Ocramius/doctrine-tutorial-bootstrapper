@@ -28,18 +28,18 @@ final class DoctrineLibraryRepository implements LibraryRepository
     /**
      * {@inheritDoc}
      */
-    public function getAmount($libraryId, $isbn)
+    public function getAmount(LibraryId $libraryId, $isbn)
     {
         return $this->getOrCreateAmount($libraryId, $isbn);
     }
 
-    public function setAmount($libraryId, BookAmount $amount)
+    public function setAmount(LibraryId $libraryId, BookAmount $amount)
     {
         $this->objectManager->persist($amount);
         $this->objectManager->flush();
     }
 
-    private function getOrCreateAmount($libraryId, $isbn)
+    private function getOrCreateAmount(LibraryId $libraryId, $isbn)
     {
         $bookAmount = $this->bookAmountRepository->findOneBy([
             'libraryId' => $libraryId,

@@ -11,7 +11,7 @@ class Library
      */
     private $repository;
 
-    public function __construct($libraryId, LibraryRepository $repository)
+    public function __construct(LibraryId $libraryId, LibraryRepository $repository)
     {
         $this->libraryId  = $libraryId;
         $this->repository = $repository;

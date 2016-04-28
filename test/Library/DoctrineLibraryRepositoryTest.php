@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Library\Amount;
 use Library\BookAmount;
 use Library\DoctrineLibraryRepository;
+use Library\LibraryId;
 use Ramsey\Uuid\Uuid;
 
 final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
@@ -46,7 +47,7 @@ final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
         $isbn      = mt_rand(1234567890000, 1234567890123);
 
         // @TODO what do we do here?
-        self::assertEquals(new BookAmount($libraryId, $isbn, 0), $this->repository->getAmount($libraryId, $isbn));
+        self::assertEquals(new BookAmount(LibraryId::fromString($libraryId), $isbn, Amount::fromInteger(0)), $this->repository->getAmount(LibraryId::fromString($libraryId), $isbn));
     }
 
     public function testGetAmountWithNonMatchingAmountTypeReturned()
@@ -57,7 +58,7 @@ final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->doctrineRepository->expects(self::any())->method('findOneBy')->willReturn(new \stdClass());
 
         // @TODO what do we do here?
-        self::assertEquals(new BookAmount($libraryId, $isbn, 0), $this->repository->getAmount($libraryId, $isbn));
+        self::assertEquals(new BookAmount(LibraryId::fromString($libraryId), $isbn, Amount::fromInteger(0)), $this->repository->getAmount(LibraryId::fromString($libraryId), $isbn));
     }
 
     public function testGetAmountWithFoundAmountOnThePersistenceLayer()
@@ -65,20 +66,20 @@ final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
         $libraryId = (string) Uuid::uuid4();
         $isbn      = mt_rand(1234567890000, 1234567890123);
 
-        $bookAmount = new BookAmount($libraryId, $isbn, Amount::fromInteger(mt_rand(100, 200)));
+        $bookAmount = new BookAmount(LibraryId::fromString($libraryId), $isbn, Amount::fromInteger(mt_rand(100, 200)));
 
         $this->doctrineRepository->expects(self::any())->method('findOneBy')->willReturn($bookAmount);
 
-        self::assertEquals($bookAmount, $this->repository->getAmount($libraryId, $isbn));
+        self::assertEquals($bookAmount, $this->repository->getAmount(LibraryId::fromString($libraryId), $isbn));
     }
 
     public function testSetAmount()
     {
-        $bookAmount = new BookAmount((string) Uuid::uuid4(), 1234567890123, Amount::fromInteger(mt_rand(100, 200)));
+        $bookAmount = new BookAmount(LibraryId::newLibraryId(), 1234567890123, Amount::fromInteger(mt_rand(100, 200)));
 
         $this->objectManager->expects(self::once())->method('persist')->with($bookAmount);
         $this->objectManager->expects(self::once())->method('flush');
         
-        $this->repository->setAmount((string) Uuid::uuid4(), $bookAmount);
+        $this->repository->setAmount(LibraryId::newLibraryId(), $bookAmount);
     }
 }

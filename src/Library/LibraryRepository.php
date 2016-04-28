@@ -5,12 +5,12 @@ namespace Library;
 interface LibraryRepository
 {
     /**
-     * @param string $libraryId
-     * @param int    $isbn
+     * @param LibraryId $libraryId
+     * @param int       $isbn
      *
      * @return BookAmount
      */
-    public function getAmount($libraryId, $isbn);
+    public function getAmount(LibraryId $libraryId, $isbn);
 
-    public function setAmount($libraryId, BookAmount $amount);
+    public function setAmount(LibraryId $libraryId, BookAmount $amount);
 }

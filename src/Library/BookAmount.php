@@ -9,7 +9,7 @@ class BookAmount
 
     private $amount;
 
-    public function __construct($libraryId, $isbn, Amount $amount)
+    public function __construct(LibraryId $libraryId, $isbn, Amount $amount)
     {
         $this->libraryId = $libraryId;
         $this->isbn      = $isbn;

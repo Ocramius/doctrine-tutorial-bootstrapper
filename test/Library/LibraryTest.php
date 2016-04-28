@@ -5,6 +5,7 @@ namespace LibraryTest;
 use Library\Amount;
 use Library\BookAmount;
 use Library\Library;
+use Library\LibraryId;
 use Library\LibraryRepository;
 use Ramsey\Uuid\Uuid;
 
@@ -16,7 +17,7 @@ class LibraryTest extends \PHPUnit_Framework_TestCase
         /* @var $libraryRepository LibraryRepository|\PHPUnit_Framework_MockObject_MockObject */
         $libraryRepository = $this->getMock(LibraryRepository::class);
 
-        $library = new Library($libraryId, $libraryRepository);
+        $library = new Library(LibraryId::fromString($libraryId), $libraryRepository);
 
         $isbn           = mt_rand(1234567890000, 1234567890123);
         $previousAmount = mt_rand(100, 200);
@@ -26,12 +27,12 @@ class LibraryTest extends \PHPUnit_Framework_TestCase
             ->expects(self::any())
             ->method('getAmount')
             ->with($libraryId, $isbn)
-            ->willReturn(new BookAmount($libraryId, $isbn, Amount::fromInteger($previousAmount)));
+            ->willReturn(new BookAmount(LibraryId::fromString($libraryId), $isbn, Amount::fromInteger($previousAmount)));
         $libraryRepository->expects(self::once())->method('setAmount')->with(
             $libraryId,
             self::callback(function (BookAmount $setAmount) use ($previousAmount, $amount, $isbn) {
                 self::assertSame($previousAmount + $amount, $setAmount->toInt());
-                self::assertSame($isbn, $setAmount->getIsbn());
+                self::assertEquals($isbn, $setAmount->getIsbn());
 
                 return true;
             })
@@ -46,12 +47,12 @@ class LibraryTest extends \PHPUnit_Framework_TestCase
         /* @var $libraryRepository LibraryRepository|\PHPUnit_Framework_MockObject_MockObject */
         $libraryRepository = $this->getMock(LibraryRepository::class);
 
-        $library = new Library($libraryId, $libraryRepository);
+        $library = new Library(LibraryId::fromString($libraryId), $libraryRepository);
 
         $isbn   = mt_rand(1234567890000, 1234567890123);
         $amount = mt_rand(100, 200);
         
-        $bookAmount = new BookAmount($libraryId, $isbn, Amount::fromInteger($amount));
+        $bookAmount = new BookAmount(LibraryId::fromString($libraryId), $isbn, Amount::fromInteger($amount));
 
         $libraryRepository->expects(self::any())->method('getAmount')->with($libraryId, $isbn)->willReturn($bookAmount);
 
