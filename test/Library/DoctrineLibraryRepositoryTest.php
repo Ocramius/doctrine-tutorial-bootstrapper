@@ -68,4 +68,14 @@ final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
 
         self::assertEquals($bookAmount, $this->repository->getAmount($libraryId, $isbn));
     }
+
+    public function testSetAmount()
+    {
+        $bookAmount = new BookAmount((string) Uuid::uuid4(), 1234567890123, mt_rand(100, 200));
+
+        $this->objectManager->expects(self::once())->method('persist')->with($bookAmount);
+        $this->objectManager->expects(self::once())->method('flush');
+        
+        $this->repository->setAmount((string) Uuid::uuid4(), $bookAmount);
+    }
 }
