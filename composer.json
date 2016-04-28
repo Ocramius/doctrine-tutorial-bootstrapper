@@ -1,0 +1,20 @@
+{
+    "require": {
+        "doctrine/orm": "^2.5",
+        "ramsey/uuid": "^3.4",
+        "ramsey/uuid-doctrine": "^1.2",
+        "doctrine/migrations": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Authentication\\": "src/Authentication",
+            "Library\\":        "src/Library",
+            "Enforcement\\":    "src/Enforcement"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "5.5.9"
+        }
+    }
+}
