@@ -4,19 +4,23 @@ namespace Library;
 
 class BookAmount
 {
+    private $libraryId;
     private $isbn;
 
     private $amount;
 
-    public function __construct($isbn, $amount)
+    public function __construct($libraryId, $isbn, $amount)
     {
-        $this->isbn = $isbn;
-        $this->amount = $amount;
+        $this->libraryId = $libraryId;
+        $this->isbn      = $isbn;
+        $this->amount    = $amount;
     }
 
     public function add($amount)
     {
-        return new self($this->isbn, $amount + $this->amount);
+        $this->amount += $amount;
+
+        return $this;
     }
 
     public function getIsbn()
