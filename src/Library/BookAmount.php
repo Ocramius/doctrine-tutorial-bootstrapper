@@ -23,6 +23,11 @@ class BookAmount
         return $this;
     }
 
+    public function getLibraryId()
+    {
+        return $this->libraryId;
+    }
+
     public function getIsbn()
     {
         return $this->isbn;

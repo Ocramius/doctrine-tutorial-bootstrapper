@@ -7,6 +7,8 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\XmlDriver;
 use Doctrine\ORM\Proxy\ProxyFactory;
 use DoctrineIntegration\Library\AmountType;
+use DoctrineIntegration\Library\ISBNType;
+use DoctrineIntegration\Library\LibraryIdType;
 use Ramsey\Uuid\Doctrine\UuidType;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -26,6 +28,8 @@ $configuration->setAutoGenerateProxyClasses(ProxyFactory::AUTOGENERATE_ALWAYS);
 
 Type::addType(UuidType::class, UuidType::class);
 Type::addType(AmountType::class, AmountType::class);
+Type::addType(ISBNType::class, ISBNType::class);
+Type::addType(LibraryIdType::class, LibraryIdType::class);
 
 // Finally creating the EntityManager: our entry point for the ORM
 return EntityManager::create(

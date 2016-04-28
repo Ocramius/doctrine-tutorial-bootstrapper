@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping\Driver\XmlDriver;
 use Doctrine\ORM\Proxy\ProxyFactory;
 use Doctrine\ORM\Tools\SchemaTool;
 use DoctrineIntegration\Library\AmountType;
+use DoctrineIntegration\Library\ISBNType;
+use DoctrineIntegration\Library\LibraryIdType;
 use Library\Amount;
 use Library\BookAmount;
 use Library\ISBN;
@@ -42,6 +44,8 @@ class BookAmountPersistenceTest extends \PHPUnit_Framework_TestCase
 
         Type::addType(UuidType::class, UuidType::class);
         Type::addType(AmountType::class, AmountType::class);
+        Type::addType(ISBNType::class, ISBNType::class);
+        Type::addType(LibraryIdType::class, LibraryIdType::class);
 
         $this->em = EntityManager::create(
             [
@@ -56,12 +60,21 @@ class BookAmountPersistenceTest extends \PHPUnit_Framework_TestCase
 
     public function testCanPersistABookAmount()
     {
-        $this->em->persist(new BookAmount(
-            LibraryId::newLibraryId(),
-            ISBN::fromInt(1111111111111),
-            Amount::fromInteger(3)
-        ));
+        $libraryId = LibraryId::newLibraryId();
+        $isbn      = ISBN::fromInt(1111111111111);
 
+        $this->em->persist(new BookAmount($libraryId, $isbn, Amount::fromInteger(3)));
         $this->em->flush();
+
+        $this->em->clear();
+
+        /* @var $bookAmount BookAmount */
+        $bookAmount = $this->em->find(BookAmount::class, ['libraryId' => $libraryId, 'isbn' => $isbn]);
+
+        self::assertInstanceOf(BookAmount::class, $bookAmount);
+        self::assertInstanceOf(LibraryId::class, $bookAmount->getLibraryId());
+        self::assertEquals($libraryId, $bookAmount->getLibraryId());
+        self::assertInstanceOf(ISBN::class, $bookAmount->getIsbn());
+        self::assertEquals($isbn, $bookAmount->getIsbn());
     }
 }

@@ -5,8 +5,8 @@
     schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
 >
     <entity name="Library\BookAmount">
-        <id name="libraryId"/>
-        <id name="isbn"/>
+        <id name="libraryId" type="DoctrineIntegration\Library\LibraryIdType"/>
+        <id name="isbn" type="DoctrineIntegration\Library\ISBNType"/>
         <field name="amount" type="DoctrineIntegration\Library\AmountType" nullable="false"/>
     </entity>
 </doctrine-mapping>
