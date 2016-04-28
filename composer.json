@@ -3,7 +3,8 @@
         "doctrine/orm": "^2.5",
         "ramsey/uuid": "^3.4",
         "ramsey/uuid-doctrine": "^1.2",
-        "doctrine/migrations": "^1.4"
+        "doctrine/migrations": "^1.4",
+        "phpunit/phpunit": "^4.8"
     },
     "autoload": {
         "psr-4": {
