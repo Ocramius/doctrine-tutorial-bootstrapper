@@ -16,4 +16,37 @@ class ISBNTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($isbn, ISBN::fromString((string) $intIsbn));
         self::assertSame((string) $intIsbn, (string) $isbn);
     }
+
+    /**
+     * @dataProvider invalidIntIsbnProvider
+     *
+     * @param mixed $invalidIsbn
+     */
+    public function testWithInvalidIntISBN($invalidIsbn)
+    {
+        $this->setExpectedException(\InvalidArgumentException::class);
+
+        ISBN::fromInt($invalidIsbn);
+    }
+
+    /**
+     * @dataProvider invalidIntIsbnProvider
+     *
+     * @param mixed $invalidIsbn
+     */
+    public function testWithInvalidString($invalidIsbn)
+    {
+        $this->setExpectedException(\InvalidArgumentException::class);
+
+        ISBN::fromString((string) $invalidIsbn);
+    }
+
+    public function invalidIntIsbnProvider()
+    {
+        return [
+            [999999999999],
+            [10000000000000],
+            ['aaaaaaaaaaaaa'],
+        ];
+    }
 }
