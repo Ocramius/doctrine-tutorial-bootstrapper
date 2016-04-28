@@ -4,6 +4,7 @@ namespace LibraryTest;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Library\Amount;
 use Library\BookAmount;
 use Library\DoctrineLibraryRepository;
 use Ramsey\Uuid\Uuid;
@@ -44,6 +45,7 @@ final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
         $libraryId = (string) Uuid::uuid4();
         $isbn      = mt_rand(1234567890000, 1234567890123);
 
+        // @TODO what do we do here?
         self::assertEquals(new BookAmount($libraryId, $isbn, 0), $this->repository->getAmount($libraryId, $isbn));
     }
 
@@ -54,6 +56,7 @@ final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->doctrineRepository->expects(self::any())->method('findOneBy')->willReturn(new \stdClass());
 
+        // @TODO what do we do here?
         self::assertEquals(new BookAmount($libraryId, $isbn, 0), $this->repository->getAmount($libraryId, $isbn));
     }
 
@@ -62,7 +65,7 @@ final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
         $libraryId = (string) Uuid::uuid4();
         $isbn      = mt_rand(1234567890000, 1234567890123);
 
-        $bookAmount = new BookAmount($libraryId, $isbn, mt_rand(100, 200));
+        $bookAmount = new BookAmount($libraryId, $isbn, Amount::fromInteger(mt_rand(100, 200)));
 
         $this->doctrineRepository->expects(self::any())->method('findOneBy')->willReturn($bookAmount);
 
@@ -71,7 +74,7 @@ final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testSetAmount()
     {
-        $bookAmount = new BookAmount((string) Uuid::uuid4(), 1234567890123, mt_rand(100, 200));
+        $bookAmount = new BookAmount((string) Uuid::uuid4(), 1234567890123, Amount::fromInteger(mt_rand(100, 200)));
 
         $this->objectManager->expects(self::once())->method('persist')->with($bookAmount);
         $this->objectManager->expects(self::once())->method('flush');

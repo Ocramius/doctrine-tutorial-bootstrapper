@@ -9,16 +9,16 @@ class BookAmount
 
     private $amount;
 
-    public function __construct($libraryId, $isbn, $amount)
+    public function __construct($libraryId, $isbn, Amount $amount)
     {
         $this->libraryId = $libraryId;
         $this->isbn      = $isbn;
         $this->amount    = $amount;
     }
 
-    public function add($amount)
+    public function add(Amount $amount)
     {
-        $this->amount += $amount;
+        $this->amount = $this->amount->add($amount);
 
         return $this;
     }
@@ -28,8 +28,13 @@ class BookAmount
         return $this->isbn;
     }
 
-    public function toInt()
+    public function toAmount()
     {
         return $this->amount;
+    }
+
+    public function toInt()
+    {
+        return $this->amount->toInt();
     }
 }

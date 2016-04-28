@@ -2,6 +2,7 @@
 
 namespace LibraryTest;
 
+use Library\Amount;
 use Library\BookAmount;
 use Library\Library;
 use Library\LibraryRepository;
@@ -25,7 +26,7 @@ class LibraryTest extends \PHPUnit_Framework_TestCase
             ->expects(self::any())
             ->method('getAmount')
             ->with($libraryId, $isbn)
-            ->willReturn(new BookAmount($libraryId, $isbn, $previousAmount));
+            ->willReturn(new BookAmount($libraryId, $isbn, Amount::fromInteger($previousAmount)));
         $libraryRepository->expects(self::once())->method('setAmount')->with(
             $libraryId,
             self::callback(function (BookAmount $setAmount) use ($previousAmount, $amount, $isbn) {
@@ -36,7 +37,7 @@ class LibraryTest extends \PHPUnit_Framework_TestCase
             })
         );
 
-        $library->addBook($isbn, $amount);
+        $library->addBook($isbn, Amount::fromInteger($amount));
     }
 
     public function testWillGetBooksFromTheLibrary()
@@ -50,7 +51,7 @@ class LibraryTest extends \PHPUnit_Framework_TestCase
         $isbn   = mt_rand(1234567890000, 1234567890123);
         $amount = mt_rand(100, 200);
         
-        $bookAmount = new BookAmount($libraryId, $isbn, $amount);
+        $bookAmount = new BookAmount($libraryId, $isbn, Amount::fromInteger($amount));
 
         $libraryRepository->expects(self::any())->method('getAmount')->with($libraryId, $isbn)->willReturn($bookAmount);
 
