@@ -56,4 +56,16 @@ final class DoctrineLibraryRepositoryTest extends \PHPUnit_Framework_TestCase
 
         self::assertEquals(new BookAmount($libraryId, $isbn, 0), $this->repository->getAmount($libraryId, $isbn));
     }
+
+    public function testGetAmountWithFoundAmountOnThePersistenceLayer()
+    {
+        $libraryId = (string) Uuid::uuid4();
+        $isbn      = mt_rand(1234567890000, 1234567890123);
+
+        $bookAmount = new BookAmount($libraryId, $isbn, mt_rand(100, 200));
+
+        $this->doctrineRepository->expects(self::any())->method('findOneBy')->willReturn($bookAmount);
+
+        self::assertEquals($bookAmount, $this->repository->getAmount($libraryId, $isbn));
+    }
 }
