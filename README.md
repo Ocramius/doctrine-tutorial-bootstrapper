@@ -82,11 +82,11 @@ We now need to set up autoloading:
     * custom repositories
     * passing repositories to entities?
  * 10m - hardening the logic with value-objects
+ * 15m - wiring together everything via XML mappings
  * 5m - transactional safety - it is needed now that we do live-queries at all times
  * 10m - transactional safety at the base of every interaction via a command bus
  * 45m - implementing book lends and returns (with commands, VOs and serialize/unserialize)
  * 15m - implementing lending books/returning books together
- * 15m - wiring together everything via XML mappings
  * 10m - installing and configuring doctrine migrations, generating first migration files
  * 20m - send notifications to users with overdue returns, don't dog-pile notifications
  * 10m - code notifications for overdue returns together
