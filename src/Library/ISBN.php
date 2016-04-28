@@ -13,14 +13,16 @@ final class ISBN
      */
     private $isbn;
 
-    private function __construct()
+    /**
+     * @param int $isbn
+     */
+    private function __construct($isbn)
     {
+        $this->isbn = $isbn;
     }
 
     public static function fromInt($intIsbn)
     {
-        $instance = new self();
-
         if (! is_int($intIsbn)) {
             throw new \InvalidArgumentException(sprintf(
                 'Provided ISBN expected to be int, %s given',
@@ -35,9 +37,7 @@ final class ISBN
             ));
         }
 
-        $instance->isbn = $intIsbn;
-
-        return $instance;
+        return new self($intIsbn);
     }
 
     public static function fromString($stringIsbn)
