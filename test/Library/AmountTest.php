@@ -37,4 +37,19 @@ class AmountTest extends \PHPUnit_Framework_TestCase
 
         Amount::fromInteger(-1);
     }
+
+    public function testAdd()
+    {
+        $intAmount1 = mt_rand(100, 200);
+        $intAmount2 = mt_rand(100, 200);
+        $amount1 = Amount::fromInteger($intAmount1);
+        $amount2 = Amount::fromInteger($intAmount2);
+
+        $sum = $amount1->add($amount2);
+
+        self::assertNotEquals($sum, $intAmount1);
+        self::assertNotEquals($sum, $intAmount2);
+        self::assertInstanceOf(Amount::class, $sum);
+        self::assertSame($intAmount1 + $intAmount2, $sum->toInt());
+    }
 }
