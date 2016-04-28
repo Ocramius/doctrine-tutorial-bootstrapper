@@ -46,6 +46,8 @@ final class DoctrineLibraryRepository implements LibraryRepository
             'isbn'      => $isbn,
         ]);
 
-        return $bookAmount instanceof BookAmount ? $bookAmount : new BookAmount($libraryId, $isbn, 0);
+        return $bookAmount instanceof BookAmount
+            ? $bookAmount
+            : new BookAmount($libraryId, $isbn, Amount::fromInteger(0));
     }
 }
