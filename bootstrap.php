@@ -6,6 +6,7 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\XmlDriver;
 use Doctrine\ORM\Proxy\ProxyFactory;
+use DoctrineIntegration\Library\AmountType;
 use Ramsey\Uuid\Doctrine\UuidType;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -24,6 +25,7 @@ $configuration->setProxyNamespace('DoctrineProxies');
 $configuration->setAutoGenerateProxyClasses(ProxyFactory::AUTOGENERATE_ALWAYS);
 
 Type::addType(UuidType::class, UuidType::class);
+Type::addType(AmountType::class, AmountType::class);
 
 // Finally creating the EntityManager: our entry point for the ORM
 return EntityManager::create(
