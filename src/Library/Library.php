@@ -59,4 +59,12 @@ class Library
 
         $this->lentBooks->add(new LentBook($this->libraryId, $isbn, $userId, $lendStartTime));
     }
+
+    public function returnLentBook(ISBN $isbn, UserId $userId, \DateTimeImmutable $returnTime)
+    {
+        /* @var $lent LentBook */
+        $lent = $this->lentBooks->get($this->libraryId, $isbn, $userId);
+        
+        $this->lentBooks->add($lent->return($returnTime));
+    }
 }
