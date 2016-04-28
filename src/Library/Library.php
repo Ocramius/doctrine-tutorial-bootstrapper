@@ -11,10 +11,26 @@ class Library
      */
     private $repository;
 
-    public function __construct(LibraryId $libraryId, LibraryRepository $repository)
-    {
+    /**
+     * @var UserExclusionPolicy
+     */
+    private $exclusionPolicy;
+
+    /**
+     * @var LentBooksRepository
+     */
+    private $lentBooks;
+
+    public function __construct(
+        LibraryId $libraryId,
+        LibraryRepository $repository
+        //UserExclusionPolicy $exclusionPolicy,
+        //LentBooksRepository $lentBooks
+    ) {
         $this->libraryId  = $libraryId;
         $this->repository = $repository;
+        //$this->exclusionPolicy = $exclusionPolicy;
+        //$this->lentBooks = $lentBooks;
     }
 
     public function addBook($isbn, $amount)
@@ -31,8 +47,16 @@ class Library
 
     public function lend(ISBN $isbn, UserId $userId, \DateTimeImmutable $lendStartTime)
     {
-        // ... check if the user is allowed (quota)
-        // ... check if inventory has book (also compute other lent books)
-        // create "lent" track, log at which time the book was given to the user
+        $this->exclusionPolicy->assertUserCanLend($userId, $this->libraryId);
+
+        if (! $amount = $this->getBookAmount($isbn)) {
+            throw new \OutOfBoundsException(sprintf('Book "%s" is not available', $isbn));
+        }
+
+        if (($amount - $this->lentBooks->countByIsbnAndLibrary($isbn, $this->libraryId)) <= 0) {
+            throw new \OutOfBoundsException(sprintf('Book "%s" is currently not available, all books already lent', $isbn));
+        }
+
+        $this->lentBooks->add(new LentBook($this->libraryId, $isbn, $userId, $lendStartTime));
     }
 }
