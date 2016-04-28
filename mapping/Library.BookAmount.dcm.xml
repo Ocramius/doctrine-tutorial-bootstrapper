@@ -7,6 +7,6 @@
     <entity name="Library\BookAmount">
         <id name="libraryId"/>
         <id name="isbn"/>
-        <field name="amount" type="integer" nullable="false"/>
+        <field name="amount" type="DoctrineIntegration\Library\AmountType" nullable="false"/>
     </entity>
 </doctrine-mapping>
