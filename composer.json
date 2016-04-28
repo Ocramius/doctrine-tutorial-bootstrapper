@@ -8,6 +8,7 @@
     },
     "autoload": {
         "psr-4": {
+            "DoctrineIntegration\\": "src/DoctrineIntegration",
             "Authentication\\": "src/Authentication",
             "Library\\":        "src/Library",
             "Enforcement\\":    "src/Enforcement"
