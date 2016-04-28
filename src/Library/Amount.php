@@ -33,6 +33,15 @@ final class Amount
         return $instance;
     }
 
+    public function add(Amount $other)
+    {
+        $instance = new self();
+
+        $instance->amount = $this->amount + $other->amount;
+
+        return $instance;
+    }
+
     public function toInt()
     {
         return $this->amount;
